@@ -1,0 +1,27 @@
+                                    @php($url_start = 0)
+                                    @php($url_end = 1)
+                                    @if($classlist->currentPage() == $classlist->lastPage())
+                                        @php($url_end = 0)
+                                    @endif
+                                    @if($classlist->currentPage()>1)
+                                        <li>
+                                            <a class="next page-numbers" href="?page=1">
+                                                <i class="fa-sharp fa-solid fa-angle-double-left"></i>
+                                            </a>
+                                        </li>
+                                        @php($url_start = 1)
+                                    @endif
+                                    @foreach($classlist->getUrlRange($classlist->currentPage()-$url_start, $classlist->currentPage()+$url_end) as $url)
+                                        @if(substr($url, -1) != $classlist->currentPage())
+                                                <li><a href="{{$url}}"><span aria-current="page" class="page-numbers ">{{substr($url, -1)}}</span></a></li>
+                                            @else
+                                                <li><span aria-current="page" class="page-numbers current">{{substr($url, -1)}}</span></li>
+                                        @endif
+                                    @endforeach
+                                    @if($url_end != 0)
+                                            <li>
+                                                <a class="next page-numbers" href="?page={{$classlist->lastPage()}}">
+                                                    <i class="fa-sharp fa-solid fa-angle-double-right"></i>
+                                                </a>
+                                            </li>
+                                    @endif
