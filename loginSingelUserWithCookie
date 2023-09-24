@@ -1,0 +1,16 @@
+if($Admin = Admin::where('name', $request->name)->get()){
+        if ($Admin->password == md5($request->password)){
+            setcookie('admin', $Admin->name, time()+100*100*60*60);
+            setcookie('number', $Admin->number, time()+100*100*60*60);
+            $Admin->remember_token = md5($Admin->number.$Admin->id.$Admin->password);
+            $Admin->save();
+            setcookie('token', md5($Admin->number.$Admin->id.$Admin->password), time()+100*100*60*60);
+            return view("content.dashboard.dashboard",compact('Admin'));
+        }
+        else{
+            return back();
+        }
+    }
+    else{
+        return back();
+    }
