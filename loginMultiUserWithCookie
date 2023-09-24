@@ -1,0 +1,17 @@
+        if($Admins = Admin::where('name', $request->name)->get()){
+
+            foreach ($Admins as $Admin){
+                if ($Admin->password == md5($request->password)){
+                    setcookie('admin', $Admin->name, time()+100*100*60*60);
+                    setcookie('number', $Admin->number, time()+100*100*60*60);
+                    $Admin->remember_token = md5($Admin->number.$Admin->id.$Admin->password);
+                    $Admin->save();
+                    setcookie('token', md5($Admin->number.$Admin->id.$Admin->password), time()+100*100*60*60);
+                    return view("content.dashboard.dashboard",compact('Admin'));
+                }
+            }
+            return 'رمز شما اشتباه است';
+        }
+        else{
+            return back();
+        }
